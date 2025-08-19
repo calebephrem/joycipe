@@ -1,12 +1,14 @@
 import { auth } from '@/config/firebase';
 import { colors } from '@/constants/colors';
 import { authStyles as styles } from '@/styles/auth.style';
+import { collectionRef } from '@/utils/favorites';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
+import { addDoc } from 'firebase/firestore';
 import React, { useState } from 'react';
 import {
   Alert,
@@ -31,7 +33,17 @@ export default function AuthScreen() {
 
     if (isLogin) {
       try {
-        await createUserWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const uid = userCredential.user.uid;
+
+        await addDoc(collectionRef, {
+          userId: uid,
+          mealIds: [],
+        });
 
         router.replace('/(tabs)');
       } catch (err) {
