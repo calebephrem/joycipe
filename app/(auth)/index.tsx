@@ -1,7 +1,12 @@
+import { auth } from '@/config/firebase';
 import { colors } from '@/constants/colors';
 import { authStyles as styles } from '@/styles/auth.style';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from 'firebase/auth';
 import React, { useState } from 'react';
 import {
   Alert,
@@ -24,7 +29,33 @@ export default function AuthScreen() {
       return;
     }
 
-    router.replace('/(tabs)');
+    if (isLogin) {
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+
+        router.replace('/(tabs)');
+      } catch (err) {
+        console.error('Authentication error:', err);
+        Alert.alert(
+          'Authentication failed',
+          'Something went wrong while authenticating. Please try again.'
+        );
+        return;
+      }
+    } else {
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+
+        router.replace('/(tabs)');
+      } catch (err) {
+        console.error('Authentication error:', err);
+        Alert.alert(
+          'Authentication failed',
+          'Something went wrong while authenticating. Please try again.'
+        );
+        return;
+      }
+    }
   };
 
   return (

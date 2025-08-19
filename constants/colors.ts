@@ -47,6 +47,6 @@ export const colors = {
   
   // Gradient colors
   gradientStart: '#3f9fff',
-  gradientEnd: '#34ddee',
+  gradientEnd: '#33ddee',
   gradientDark: '#0A0A0B',
 }

@@ -1,14 +1,23 @@
+import { auth } from '@/config/firebase';
 import { colors } from '@/constants/colors';
 import { settingsStyles as styles } from '@/styles/settings.style';
 import { router } from 'expo-router';
-import { Bell, ChevronRight, CircleHelp as HelpCircle, LogOut, User } from 'lucide-react-native';
+import { signOut } from 'firebase/auth';
+import {
+  Bell,
+  ChevronRight,
+  CircleHelp as HelpCircle,
+  LogOut,
+  User,
+} from 'lucide-react-native';
 import React from 'react';
 import {
+  Alert,
   SafeAreaView,
   ScrollView,
   Text,
   TouchableOpacity,
-  View
+  View,
 } from 'react-native';
 
 interface SettingItemProps {
@@ -19,29 +28,39 @@ interface SettingItemProps {
   showArrow?: boolean;
 }
 
-function SettingItem({ icon, title, subtitle, onPress, showArrow = true }: SettingItemProps) {
+function SettingItem({
+  icon,
+  title,
+  subtitle,
+  onPress,
+  showArrow = true,
+}: SettingItemProps) {
   return (
     <TouchableOpacity style={styles.settingItem} onPress={onPress}>
       <View style={styles.settingLeft}>
-        <View style={styles.iconContainer}>
-          {icon}
-        </View>
+        <View style={styles.iconContainer}>{icon}</View>
         <View style={styles.settingText}>
           <Text style={styles.settingTitle}>{title}</Text>
           {subtitle && <Text style={styles.settingSubtitle}>{subtitle}</Text>}
         </View>
       </View>
-      {showArrow && (
-        <ChevronRight size={20} color={colors.gray400} />
-      )}
+      {showArrow && <ChevronRight size={20} color={colors.gray400} />}
     </TouchableOpacity>
   );
 }
 
 export default function SettingsScreen() {
-  const handleSignOut = () => {
-    // This is where you'll handle Firebase sign out
-    router.replace('/(auth)');
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      router.replace('/(auth)');
+    } catch (err) {
+      if (err instanceof Error) {
+        Alert.alert('Error happened while signing out', err.message);
+      } else {
+        Alert.alert('Something went wrong while signing out');
+      }
+    }
   };
 
   return (
@@ -50,7 +69,10 @@ export default function SettingsScreen() {
         <Text style={styles.title}>Settings</Text>
       </View>
 
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>Account</Text>
           <View style={styles.sectionContent}>
