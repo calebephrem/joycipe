@@ -1,22 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  SafeAreaView,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator,
-  Dimensions,
-} from 'react-native';
-import { useLocalSearchParams, router } from 'expo-router';
-import { ArrowLeft, Heart, Clock, Users } from 'lucide-react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { colors } from '@/constants/colors';
 import { mealdbService } from '@/services/mealdb';
 import { Meal } from '@/types/meal';
 import { favoritesService } from '@/utils/favorites';
+import { LinearGradient } from 'expo-linear-gradient';
+import { router, useLocalSearchParams } from 'expo-router';
+import { ArrowLeft, Clock, Heart, Users } from 'lucide-react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  ActivityIndicator,
+  Dimensions,
+  Image,
+  Linking,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 const { width } = Dimensions.get('window');
 
@@ -74,6 +75,10 @@ export default function RecipeDetailScreen() {
     return ingredients;
   };
 
+  const openYoutube = (link: string) => {
+    Linking.openURL(link);
+  };
+
   if (loading) {
     return (
       <View style={styles.loading}>
@@ -87,7 +92,10 @@ export default function RecipeDetailScreen() {
     return (
       <View style={styles.error}>
         <Text style={styles.errorText}>Recipe not found</Text>
-        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
           <Text style={styles.backButtonText}>Go Back</Text>
         </TouchableOpacity>
       </View>
@@ -102,12 +110,18 @@ export default function RecipeDetailScreen() {
         <View style={styles.imageContainer}>
           <Image source={{ uri: meal.strMealThumb }} style={styles.image} />
           <View style={styles.headerButtons}>
-            <TouchableOpacity style={styles.headerButton} onPress={() => router.back()}>
+            <TouchableOpacity
+              style={styles.headerButton}
+              onPress={() => router.back()}
+            >
               <ArrowLeft size={24} color={colors.white} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.headerButton} onPress={handleFavoritePress}>
-              <Heart 
-                size={24} 
+            <TouchableOpacity
+              style={styles.headerButton}
+              onPress={handleFavoritePress}
+            >
+              <Heart
+                size={24}
                 color={isFavorite ? colors.error : colors.white}
                 fill={isFavorite ? colors.error : 'transparent'}
               />
@@ -163,7 +177,10 @@ export default function RecipeDetailScreen() {
           {meal.strYoutube && (
             <View style={styles.section}>
               <Text style={styles.sectionTitle}>Video Tutorial</Text>
-              <TouchableOpacity style={styles.videoButton}>
+              <TouchableOpacity
+                style={styles.videoButton}
+                onPress={() => openYoutube(meal.strYoutube!)}
+              >
                 <LinearGradient
                   colors={[colors.error, '#C53030']}
                   style={styles.videoButtonGradient}
