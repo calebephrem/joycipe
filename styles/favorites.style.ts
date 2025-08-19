@@ -43,6 +43,7 @@ export const favoritesStyles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 24,
     paddingBottom: 24,
+    gap: 5,
   },
   empty: {
     flex: 1,

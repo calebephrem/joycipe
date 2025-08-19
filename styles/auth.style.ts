@@ -123,6 +123,11 @@ export const authStyles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 24,
   },
+  forgotpwdButton: {
+    alignItems: 'flex-end',
+    margin: 0,
+    paddingRight: 10
+  },
   switchText: {
     fontSize: 14,
     color: colors.textSecondary,

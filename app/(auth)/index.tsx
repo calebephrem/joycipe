@@ -33,17 +33,7 @@ export default function AuthScreen() {
 
     if (isLogin) {
       try {
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
-        const uid = userCredential.user.uid;
-
-        await addDoc(collectionRef, {
-          userId: uid,
-          mealIds: [],
-        });
+        await signInWithEmailAndPassword(auth, email, password);
 
         router.replace('/(tabs)');
       } catch (err) {
@@ -56,7 +46,17 @@ export default function AuthScreen() {
       }
     } else {
       try {
-        await signInWithEmailAndPassword(auth, email, password);
+        const userCredential = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        const uid = userCredential.user.uid;
+
+        await addDoc(collectionRef, {
+          userId: uid,
+          mealIds: [],
+        });
 
         router.replace('/(tabs)');
       } catch (err) {
@@ -124,13 +124,22 @@ export default function AuthScreen() {
               />
             </View>
 
+            {isLogin && (
+              <TouchableOpacity
+                style={styles.forgotpwdButton}
+                onPress={() => router.replace('/(auth)/forgotpwd')}
+              >
+                <Text style={styles.switchText}>Forgot Password</Text>
+              </TouchableOpacity>
+            )}
+
             <TouchableOpacity style={styles.button} onPress={handleAuth}>
               <LinearGradient
                 colors={[colors.primary, colors.primaryDark]}
                 style={styles.buttonGradient}
               >
                 <Text style={styles.buttonText}>
-                  {isLogin ? 'Sign In' : 'Sign Up'}
+                  {isLogin ? 'Sign Up' : 'Create Account'}
                 </Text>
               </LinearGradient>
             </TouchableOpacity>
@@ -141,7 +150,7 @@ export default function AuthScreen() {
             >
               <Text style={styles.switchText}>
                 {isLogin
-                  ? "Don't have an account? Sign Up"
+                  ? 'No account? create one!'
                   : 'Already have an account? Sign In'}
               </Text>
             </TouchableOpacity>
