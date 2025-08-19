@@ -1,8 +1,27 @@
 {
-  "name": "Joycipe",
+  "name": "joycipe",
   "main": "expo-router/entry",
   "version": "1.0.0",
   "private": true,
+  "license": "MIT",
+  "author": "Caleb Ephrem",
+  "description": "A React Native app for discovering and sharing recipes.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/calebephrem/joycipe"
+  },
+  "bugs": {
+    "url": "https://github.com/calebephrem/joycipe/issues",
+    "email": "quantumpandaprog@gmail.com"
+  },
+  "keywords": [
+    "react-native",
+    "expo",
+    "recipes",
+    "food",
+    "mobile",
+    "app"
+  ],
   "scripts": {
     "dev": "npx expo start",
     "build:web": "expo export --platform web",
