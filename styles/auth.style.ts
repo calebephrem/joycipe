@@ -1,5 +1,5 @@
-import { colors } from "@/constants/colors";
-import { StyleSheet } from "react-native";
+import { colors } from '@/constants/colors';
+import { StyleSheet } from 'react-native';
 
 export const authStyles = StyleSheet.create({
   container: {
@@ -7,6 +7,17 @@ export const authStyles = StyleSheet.create({
   },
   gradient: {
     flex: 1,
+  },
+  loading: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.background,
+  },
+  loadingText: {
+    marginTop: 16,
+    fontSize: 16,
+    color: colors.textSecondary,
   },
   orb1: {
     position: 'absolute',
@@ -126,7 +137,7 @@ export const authStyles = StyleSheet.create({
   forgotpwdButton: {
     alignItems: 'flex-end',
     margin: 0,
-    paddingRight: 10
+    paddingRight: 10,
   },
   switchText: {
     fontSize: 14,

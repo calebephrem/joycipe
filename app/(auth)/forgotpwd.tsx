@@ -28,7 +28,7 @@ export default function ForgotpwdScreen() {
       await sendPasswordResetEmail(auth, email);
       Alert.alert(
         'Password reset email sent!',
-        'Password reset email sent! Check your inbox to see the password reset link'
+        'Password reset email sent! Check your inbox or spam folder to see the password reset link.'
       );
       console.log('Password reset email sent!');
       router.replace('/(auth)');

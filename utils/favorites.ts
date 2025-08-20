@@ -42,7 +42,7 @@ export const favoritesService = {
         })
         .filter((fav) => fav.userId === auth?.currentUser?.uid);
 
-      const userFavorite = favorites[0]; // assuming one favorites doc per user
+      const userFavorite = favorites[0];
 
       if (userFavorite && !userFavorite.mealIds.includes(mealId)) {
         const documentRef = doc(db, 'favorites', userFavorite.id);
