@@ -49,7 +49,7 @@ export default function CategoryScreen() {
     const isFav = favorites.includes(mealId);
     if (isFav) {
       await favoritesService.removeFavorite(mealId);
-      setFavorites(favorites.filter(id => id !== mealId));
+      setFavorites(favorites.filter((id) => id !== mealId));
     } else {
       await favoritesService.addFavorite(mealId);
       setFavorites([...favorites, mealId]);
@@ -68,14 +68,20 @@ export default function CategoryScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => router.back()}
+        >
           <ArrowLeft size={24} color={colors.primary} />
         </TouchableOpacity>
         <Text style={styles.title}>{name}</Text>
         <Text style={styles.subtitle}>{meals.length} recipes</Text>
       </View>
 
-      <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
+      <ScrollView
+        style={styles.scrollView}
+        showsVerticalScrollIndicator={false}
+      >
         <View style={styles.recipesGrid}>
           {meals.map((meal) => (
             <RecipeCard
@@ -84,6 +90,8 @@ export default function CategoryScreen() {
               onPress={() => router.push(`/recipe/${meal.idMeal}`)}
               onFavoritePress={() => handleFavoritePress(meal.idMeal)}
               isFavorite={favorites.includes(meal.idMeal)}
+              buttons={false}
+              description={false}
             />
           ))}
         </View>

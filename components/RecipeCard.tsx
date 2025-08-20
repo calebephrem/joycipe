@@ -1,5 +1,6 @@
 import { colors } from '@/constants/colors';
 import { Meal } from '@/types/meal';
+import { ellipsify } from '@/utils/utils';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Heart } from 'lucide-react-native';
 import React from 'react';
@@ -20,13 +21,19 @@ interface RecipeCardProps {
   onPress: () => void;
   onFavoritePress?: () => void;
   isFavorite?: boolean;
+  buttons?: boolean;
+  description?: boolean;
+  servings?: boolean;
 }
 
-export default function RecipeCard({ 
-  meal, 
-  onPress, 
+export default function RecipeCard({
+  meal,
+  onPress,
   onFavoritePress,
-  isFavorite = false 
+  isFavorite = false,
+  buttons = true,
+  description = true,
+  servings = true,
 }: RecipeCardProps) {
   return (
     <TouchableOpacity style={styles.card} onPress={onPress}>
@@ -37,13 +44,18 @@ export default function RecipeCard({
           style={styles.imageOverlay}
         />
         {onFavoritePress && (
-          <TouchableOpacity 
+          <TouchableOpacity
             style={styles.favoriteButton}
             onPress={onFavoritePress}
           >
-            <View style={[styles.favoriteGlow, isFavorite && styles.favoriteGlowActive]}>
-              <Heart 
-                size={18} 
+            <View
+              style={[
+                styles.favoriteGlow,
+                isFavorite && styles.favoriteGlowActive,
+              ]}
+            >
+              <Heart
+                size={18}
                 color={isFavorite ? colors.error : colors.white}
                 fill={isFavorite ? colors.error : 'transparent'}
               />
@@ -51,24 +63,37 @@ export default function RecipeCard({
           </TouchableOpacity>
         )}
       </View>
-      
+
       <View style={styles.content}>
-        <Text style={styles.title} numberOfLines={2}>
+        <Text
+          style={[styles.title, { fontSize: description ? 15 : 18 }]}
+          numberOfLines={2}
+        >
           {meal.strMeal}
         </Text>
-        <View style={styles.tags}>
-          <LinearGradient
-            colors={[colors.primary, colors.primaryDark]}
-            style={styles.categoryTag}
-          >
-            <Text style={styles.categoryText}>{meal.strCategory}</Text>
-          </LinearGradient>
-          <View style={styles.countryTag}>
-            <Text style={styles.countryText}>🌍 {meal.strArea}</Text>
+        {description && (
+          <Text style={styles.description}>
+            {ellipsify({
+              text: meal.strInstructions.replace(/\n/g, ' '),
+              length: 100,
+            })}
+          </Text>
+        )}
+        {buttons && (
+          <View style={styles.tags}>
+            <LinearGradient
+              colors={[colors.primary, colors.primaryDark]}
+              style={styles.categoryTag}
+            >
+              <Text style={styles.categoryText}>{meal.strCategory}</Text>
+            </LinearGradient>
+            <View style={styles.countryTag}>
+              <Text style={styles.countryText}>🌍 {meal.strArea}</Text>
+            </View>
           </View>
-        </View>
+        )}
       </View>
-      
+
       {/* Glow effect */}
       <View style={styles.cardGlow} />
     </TouchableOpacity>
@@ -143,6 +168,12 @@ const styles = StyleSheet.create({
     color: colors.textPrimary,
     marginBottom: 12,
     lineHeight: 20,
+  },
+  description: {
+    fontSize: 12,
+    color: colors.textSecondary,
+    marginBottom: 12,
+    lineHeight: 15,
   },
   tags: {
     flexDirection: 'row',

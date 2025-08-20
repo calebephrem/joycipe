@@ -1,14 +1,14 @@
-import React from 'react';
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-} from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { colors } from '@/constants/colors';
 import { Category } from '@/types/meal';
+import { LinearGradient } from 'expo-linear-gradient';
+import React from 'react';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 interface CategoryCardProps {
   category: Category;
@@ -34,7 +34,7 @@ export default function CategoryCard({ category, onPress }: CategoryCardProps) {
 const styles = StyleSheet.create({
   card: {
     alignItems: 'center',
-    marginRight: 20,
+    marginRight: 14,
     width: 90,
   },
   imageContainer: {
