@@ -3,13 +3,13 @@ import { colors } from '@/constants/colors';
 import { authStyles as styles } from '@/styles/auth.style';
 import { collectionRef } from '@/utils/favorites';
 import { LinearGradient } from 'expo-linear-gradient';
-import { router } from 'expo-router';
+import { useRouter } from 'expo-router';
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from 'firebase/auth';
 import { addDoc } from 'firebase/firestore';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Alert,
   KeyboardAvoidingView,
@@ -21,6 +21,21 @@ import {
 } from 'react-native';
 
 export default function AuthScreen() {
+  const router = useRouter(); // ✅ always called
+  const [checking, setChecking] = useState(true); // ✅ always called
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user?.email) {
+        router.replace('/(tabs)');
+      } else {
+        setChecking(false);
+      }
+    });
+
+    return unsubscribe;
+  }, [router]);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLogin, setIsLogin] = useState(true);
@@ -69,6 +84,14 @@ export default function AuthScreen() {
       }
     }
   };
+
+  if (checking) {
+    return (
+      <View style={styles.loading}>
+        <Text style={styles.loadingText}>Checking authentication...</Text>
+      </View>
+    );
+  }
 
   return (
     <KeyboardAvoidingView
